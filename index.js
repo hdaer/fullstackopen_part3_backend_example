@@ -41,8 +41,11 @@ const requestLogger = (request, response, next) => {
 
 app.use(express.json())
 app.use(requestLogger)
+// app.use(cors({
+//     origin: 'http://localhost:5173'
+// }))
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'https://fullstackopen-part3-backend-example.onrender.com:10000'
 }))
 
 app.get('/', (request, response) => {
