@@ -1,5 +1,4 @@
 const express = require('express')
-const cors = require('cors')
 const app = express()
 
 let notes = [
@@ -42,9 +41,6 @@ const requestLogger = (request, response, next) => {
 app.use(express.json())
 app.use(express.static('dist'))
 app.use(requestLogger)
-app.use(cors({
-    origin: 'http://localhost:5173'
-}))
 
 
 app.get('/', (request, response) => {
