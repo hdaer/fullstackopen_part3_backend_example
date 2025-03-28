@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+// const notes = require('./notes.js')
+
 
 if (process.argv.length < 3) {
     console.log('give password as argument')
@@ -12,7 +14,6 @@ const url = `mongodb+srv://fullstackopen:${password}@fullstackopen.smj4fae.mongo
 
 
 mongoose.set('strictQuery', false)
-
 mongoose.connect(url)
 
 const noteSchema = new mongoose.Schema({
@@ -21,6 +22,20 @@ const noteSchema = new mongoose.Schema({
 })
 
 const Note = mongoose.model('Note', noteSchema)
+
+
+// notes.forEach(note => {
+//     const newNote = new Note({
+//         content: note.content,
+//         important: note.important,
+//     })
+
+//     newNote.save().then(() => {
+//         console.log('note saved!')
+//     })
+
+// })
+
 
 const note = new Note({
     content: "test 2 note",
