@@ -51,7 +51,7 @@ app.post('/api/notes', (request, response) => {
     })
 })
 
-app.put('/api/notes/:id', (request, response) => {
+app.put('/api/notes/:id', (request, response, next) => {
     const id = request.params.id
     const body = request.body
 
@@ -59,27 +59,32 @@ app.put('/api/notes/:id', (request, response) => {
         return response.status(400).json({ error: 'content missing' })
     }
 
-    const note = notes.find(note => note.id === id)
-    if (!note) {
-        return response.status(404).json({ error: 'note not found' })
-    }
+    Note.findByIdAndUpdate(
+        request.params.id,
+        { content: body.content, important: body.important },
+    ).then(result => {
+        if (result) {
+            response.json(result)
+        } else {
+            response.status(404).json({ error: 'note not found' })
+        }
+    })
+        .catch(error => next(error))
 
-    const updatedNote = {
-        ...note,
-        content: body.content,
-        important: body.important !== undefined ? body.important : note.important,
-    }
-
-    notes = notes.map(note => note.id === id ? updatedNote : note)
-
-    response.json(updatedNote)
 })
 
-app.delete('/api/notes/:id', (request, response) => {
-    const id = request.params.id
-    notes = notes.filter(note => note.id !== id)
 
-    response.status(204).end()
+app.delete('/api/notes/:id', (request, response, next) => {
+    Note.findByIdAndDelete(request.params.id)
+        .then(result => {
+            if (result) {
+                response.status(204).end()
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => next(error))
+
 })
 
 const unknownEndpoint = (request, response) => {
