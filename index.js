@@ -60,11 +60,12 @@ app.put('/api/notes/:id', (request, response, next) => {
     }
 
     Note.findByIdAndUpdate(
-        request.params.id,
+        id,
         { content: body.content, important: body.important },
     ).then(result => {
         if (result) {
-            response.json(result)
+            // response.json(result)
+            console.log("i really toggled")
         } else {
             response.status(404).json({ error: 'note not found' })
         }
