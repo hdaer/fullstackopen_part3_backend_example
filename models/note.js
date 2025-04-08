@@ -21,8 +21,12 @@ mongoose.connect(url)
 // const password = process.argv[2]
 
 const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
+    content: {
+        type: String,
+        minLength: 5,
+        required: true
+    },
+    important: Boolean
 })
 
 
